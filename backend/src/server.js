@@ -10,4 +10,4 @@ app.use("/api/auth",authroutes);
 app.use("/api/msg",msg);
 app.listen(PORT, () => {
  console.log(`server working on port ${PORT}`);
-})
+}) 
