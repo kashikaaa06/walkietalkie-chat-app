@@ -2,9 +2,10 @@
   "name": "walkietalkie",
   "version": "1.0.0",
   "description": "> Real-time chat application with walkie-talkie vibes",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
+    "start": "npm run start --prefix backend",
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
   },
   "repository": {
     "type": "git",
@@ -17,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/kashikaaa06/walkietalkie-chat-app/issues"
   },
-  "homepage": "https://github.com/kashikaaa06/walkietalkie-chat-app#readme"
+  "homepage": "https://github.com/kashikaaa06/walkietalkie-chat-app#readme",
+  "devDependencies": {
+    "concurrently": "^8.0.0"
+  }
 }
