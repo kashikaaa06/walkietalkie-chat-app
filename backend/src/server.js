@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 3000;
 const authroutes = require("./routes/auth.js");
 const msg = require("./routes/msg.js");
 const path = require("path");
+const connectDB = require("./lib/db.js")
 
 
 
@@ -22,4 +23,5 @@ if (process.env.NODE_ENV === "production") {
 
 app.listen(PORT, () => {
     console.log(`Server working on port ${PORT}`);
+    connectDB(); // Connect to mongoDB when the server starts
 });
