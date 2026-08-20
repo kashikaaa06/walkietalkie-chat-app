@@ -6,14 +6,15 @@ const PORT = process.env.PORT || 3000;
 const authroutes = require("./routes/auth.js");
 const msg = require("./routes/msg.js");
 const path = require("path");
-const connectDB = require("./lib/db.js")
+const connectDB = require("./lib/db.js");
 
 
+connectDB();
 
+app.use(express.json());
 app.use("/api/auth", authroutes);
 app.use("/api/msg", msg);
 
-// To make server work in production
 if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
     app.get("*path", (req, res) => {
@@ -22,6 +23,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(PORT, () => {
-    console.log(`Server working on port ${PORT}`);
-    connectDB(); // Connect to mongoDB when the server starts
+    console.log(`🚀 Server working on port ${PORT}`);
 });
