@@ -8,10 +8,11 @@ const msg = require("./routes/msg.js");
 const path = require("path");
 const connectDB = require("./lib/db.js");
 
-
 connectDB();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/api/auth", authroutes);
 app.use("/api/msg", msg);
 
