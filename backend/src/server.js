@@ -1,12 +1,12 @@
 const express = require("express");
 const app = express();
-const dotenv = require("dotenv");
-dotenv.config();
-const PORT = process.env.PORT || 3000;
+const env = require("./lib/env.js");  // ✅ Load all env vars
 const authroutes = require("./routes/auth.js");
 const msg = require("./routes/msg.js");
 const path = require("path");
 const connectDB = require("./lib/db.js");
+
+const PORT = env.PORT || 3000; 
 
 connectDB();
 
@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authroutes);
 app.use("/api/msg", msg);
 
-if (process.env.NODE_ENV === "production") {
+if (env.NODE_ENV === "production") {  
     app.use(express.static(path.join(__dirname, "../frontend/dist")));
     app.get("*path", (req, res) => {
         res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));

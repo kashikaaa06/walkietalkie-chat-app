@@ -1,14 +1,11 @@
-
-require('dotenv').config();
-
 const { Resend } = require('resend');
+const env = require('./env.js');
 
-
-const resendClient = new Resend(process.env.RESEND_API_KEY);
+const resendClient = new Resend(env.RESEND_API_KEY);
 
 const sender = {
-    email: process.env.EMAIL_FROM , 
-    name: process.env.EMAIL_FROM_NAME,
+    email: env.EMAIL_FROM,
+    name: env.EMAIL_FROM_NAME
+};
 
-}
-module.exports = {resendClient , sender}
+module.exports = { resendClient, sender };

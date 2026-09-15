@@ -1,6 +1,7 @@
 const User = require("../models/user.js");
-const bcrypt = require("bcryptjs");  
+const bcrypt = require("bcryptjs");
 const { generateToken } = require("../lib/utils.js");
+const { sendWelcomeEmail } = require("../emails/handler.js"); 
 
 const signup = async (req, res) => {
     const { fullname, email, password } = req.body;
@@ -34,8 +35,17 @@ const signup = async (req, res) => {
         if (newUser) {
             generateToken(newUser._id, res);
             await newUser.save();
-            
-            // ✅ FIXED: 201 (Created) not 400 (Bad Request)
+
+            // ✅ Send welcome email
+            try {
+                await sendWelcomeEmail({
+                    to: newUser.email,
+                    name: newUser.fullname,
+                });
+            } catch (error) {
+                console.error("Error sending welcome email:", error);
+            }
+
             res.status(201).json({
                 _id: newUser._id,
                 fullname: newUser.fullname,

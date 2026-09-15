@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+const env = require("./env.js");
 
 const generateToken = (userId, res) => {
-    const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId }, env.JWT_SECRET, {
         expiresIn: "7d",
     });
 
@@ -9,7 +10,7 @@ const generateToken = (userId, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true,
         sameSite: "strict",
-        secure: process.env.NODE_ENV === "production" ? true : false, 
+        secure: env.NODE_ENV === "production" ? true : false,
     });
 
     return token;
