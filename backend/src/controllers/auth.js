@@ -2,7 +2,7 @@ const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const { generateToken } = require("../lib/utils.js");
 const { sendWelcomeEmail } = require("../emails/handler.js"); 
-
+const {ENV} = require("../lib/env.js");
 const signup = async (req, res) => {
     const { fullname, email, password } = req.body;
     try {
@@ -61,7 +61,33 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-    res.send("login endpoint");
+    const { email , password} = req.body 
+    if(!email || !password) {
+        return res.status(400).json({message : "email and password is required"})
+    }
+    try {
+        const user = await User.findOne({email})
+        if (!user) {
+            return res.status(400).json({message: "Invalid credentials"})
+
+        }
+        const isPasswordCorrect = await bcrypt.compare(password, user.password)
+        if(!isPasswordCorrect) {
+            return res.status(400).json({message: "Invalid credentials"})
+        }
+        generateToken(user._id, res);
+        res.status(200).json({
+            _id: user._id,
+            fullname: user.fullname,
+            email: user.email,
+            profilePic: user.profilePic || "",
+        })
+
+    }
+    catch (error) {
+        console.log("Error in login:", error);
+        res.status(500).json({ message: "Error occurred while logging in" });
+    }
 };
 
 const logout = async (req, res) => {
