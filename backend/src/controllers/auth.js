@@ -91,7 +91,13 @@ const login = async (req, res) => {
 };
 
 const logout = async (req, res) => {
-    res.send("logout endpoint");
+   try {
+        res.cookie("token", "", { maxAge: 0 });
+        res.status(200).json({ message: "Logged out successfully" });
+    } catch (error) {
+        console.log("Error in logout:", error);
+        res.status(500).json({ message: "Error occurred while logging out" });
+    }
 };
 
 module.exports = {
